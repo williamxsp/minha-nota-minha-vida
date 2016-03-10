@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>FIAP - Minha Nota Minha Vida</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+	<style>
+
+	table{
+		/*transition: all 1s;*/
+	}
+
+	td
+	{
+		opacity:0;
+	}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>1SI* <small>Minha Nota Minha Vida</small></h1>
+		</div>
+
+		<table class='table table-striped ' style='opacity:0'>
+			<thead>
+				<tr>
+					<th>Disciplina</th>
+					<th>Média 1S</th>
+					<th>NAC</th>
+					<th>AM</th>
+					<th>Média 2S</th>
+					<th>Falta na PS</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td>Eletrônica Digital</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+				<tr>
+					<td>Digital</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+				<tr>
+					<td>Ética e Comunicação</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+				<tr>
+					<td>Games</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+				<tr>
+					<td>Laboratório de Programação</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+				<tr>
+					<td>Matemática</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+				<tr>
+					<td>Modelos e estruturas de Computadores</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+				<tr>
+					<td>Sistemas de Informação</td>
+
+					<td><input type="text" class='form-control media-1s'></td>
+					<td><input type="text" class='form-control nac'></td>
+					<td><input type="text" class='form-control am'></td>
+					<td class='media'>0</td>
+					<td class='falta-na-ps'>0</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+<script>
+window.onload = function()
+{
+
+
+	document.querySelector('table').style.opacity = '1';
+	var inputs = document.querySelectorAll('input');
+	var tds = document.querySelectorAll('td');
+
+	for(t in tds)
+	{
+		if(typeof tds[t] == 'object'){			
+			
+			tds[t].style.transition = 'all 0.2s ease-in ' + (t/50) + 's';	
+			tds[t].style.opacity = '1';
+		}
+	}
+
+	for (k in inputs){
+
+		inputs[k].onchange = function(){
+
+			this.value = Number(this.value);
+
+			if(isNaN(this.value)){
+				this.value = 0;
+			}
+			if(this.value > 10 || this.value < 0)
+			{
+				this.focus();
+				this.parentNode.setAttribute('class', 'has-error');
+				return false;
+			}
+			else
+			{
+				this.parentNode.setAttribute('class', '');
+			}
+			updateValues();
+		}
+	}
+}
+
+
+function updateValues()
+{
+	var rows = document.querySelectorAll('tbody tr');
+	
+
+	for(r in rows)
+	{
+		var row = rows[r];
+		if(typeof row == 'object'){
+			var media1s = Number(row.querySelector('input.media-1s').value);
+			var nac = Number(row.querySelector('input.nac').value);
+			var am = Number(row.querySelector('input.am').value);
+			var tdMedia = row.querySelector('td.media');
+			var tdfaltaNaPSs = row.querySelector('td.falta-na-ps');
+
+			var media = nac * 0.2 + am * 0.3;
+			var mediaAnual = (media + media1s) ;
+			var faltaNaPS;
+
+			if(mediaAnual > 12)
+			{
+				faltaNaPS = "Nada";
+			}
+			else
+			{
+				faltaNaPS = Number(12 - mediaAnual).toFixed(2) * 2;  //NAC VALE 0.5
+			}
+
+			tdMedia.innerHTML = Number(media).toFixed(2);
+			tdfaltaNaPSs.innerHTML = faltaNaPS;
+
+			
+		}
+	}
+}
+</script>
+</html>

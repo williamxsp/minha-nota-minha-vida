@@ -1,0 +1,81 @@
+extends ../templates/index.jade
+
+block content
+  h1(class="pull-xs-left")!= curso.titulo
+  a(class="btn  pull-xs-right", href="/curso") Todos os Cursos
+  div(class="clearfix")
+  form(class="form", method="POST", action="/curso")
+    if curso
+      input(type="hidden" name="id" value=curso.id)
+    fieldset(class="form-group")
+        label(for="titulo") Título do Curso
+        input(class="form-control", type="text", name="titulo", id="titulo", placeholder="Sistemas de Informação, Ciências da Computação, etc", value=curso.titulo)
+    fieldset(class="form-group")
+        label(for="ano") Ano
+        input(class="form-control", type="number", name="ano", id="ano", value=curso.ano)
+    h3 Matérias
+    div(class="materias")
+      each materia in curso.materias
+        fieldset(class="form-group")
+          div.input-group
+            input(class="form-control", type="text", name="materias", placeholder="Matemática, Algoritmos, etc", value=materia.titulo)
+            div.input-group-addon.removerMateria X
+    fieldset.form-group
+      button#addMateria(class="btn btn-primary pull-xs-right") + Matéria
+    div.clearfix
+    fieldset(class="form-group")
+      if curso.id
+        button(class="btn btn-success pull-xs-right", type="submit") Editar Curso
+      else
+        button(class="btn btn-success pull-xs-right", type="submit") Adicionar Curso
+      
+    script.
+      document.getElementById('addMateria').addEventListener('click', function(ev){
+        ev.preventDefault();
+        addMateria();
+      });
+      
+      var materias = document.querySelectorAll('.removerMateria');
+      
+      [].forEach.call(materias, function(v, k){
+       v.addEventListener('click', function(ev){
+        ev.preventDefault();
+        removerMateria(this.parentNode.parentNode);
+        
+       });
+      });
+      
+      function addMateria(){
+        var fieldset = document.createElement('fieldset');
+        fieldset.classList.add('form-group');
+        
+        var inputGroup = document.createElement('div');
+        inputGroup.classList.add('input-group');
+        
+        var inputGroupAddOn = document.createElement('div');
+        inputGroupAddOn.classList.add('input-group-addon');
+        inputGroupAddOn.innerHTML = 'X';
+        inputGroupAddOn.addEventListener('click', function(ev){
+          ev.preventDefault();
+          removerMateria(this.parentNode.parentNode);
+        });
+        
+        
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'materias');
+        input.setAttribute('placeholder', 'Matemática, Algoritmos, etc');
+        input.classList.add('form-control');
+        
+        
+        inputGroup.appendChild(input);
+        inputGroup.appendChild(inputGroupAddOn);
+        fieldset.appendChild(inputGroup);
+        
+        document.querySelector('div.materias').appendChild(fieldset);
+        
+      }
+      
+      function removerMateria(materia){
+        materia.remove();
+      }

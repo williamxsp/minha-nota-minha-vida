@@ -1,0 +1,18 @@
+extends ../templates/index.jade
+
+block content
+  h1(class="pull-xs-left") Cursos
+  a(class="btn btn-primary pull-xs-right", href="/curso/new") + Novo Curso
+  table(class="table table-striped")
+    thead
+      tr
+        th Título do Curso
+        th Opções
+    tbody
+      each curso in cursos
+        tr
+          td!= curso.titulo
+          td
+            a(href="/notas/" + curso.id) 2S 
+            a(href="/curso/" + curso.id) Editar 
+            a(href="/curso/" + curso.id + '/remover') Remover 

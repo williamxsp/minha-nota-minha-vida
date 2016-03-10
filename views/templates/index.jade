@@ -1,0 +1,43 @@
+doctype
+html(lang="pt-BR")
+  head
+    link(href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css', rel='stylesheet')
+    title Minha Nota Minha Vida
+    style.
+      td
+      {
+        opacity:0;
+      }
+  body
+    header(class="navbar navbar-light")
+      div(class="clearfix")
+        button(class="navbar-toggler pull-xs-right hidden-sm-up", type="button", data-toggle="collapse", data-target="#bd-main-nav") ☰
+        a(class="navbar-brand hidden-sm-up", href="/") Minha Nota Minha Vida
+      div(class="collapse navbar-toggleable-xs", id="bd-main-nav")
+        nav(class="nav navbar-nav")
+          a(class="nav-item nav-link active", href="/") Minha Nota Minha Vida
+          a(class="nav-item nav-link", href="/curso") Cursos
+    div(class="container")
+      block content
+    script(src="https://code.jquery.com/jquery-2.2.1.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js")
+    script(src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js", crossorigin="anonymous")
+    script.
+      window.onload = function()
+      {
+        document.querySelector('table').style.opacity = '1';
+        var inputs = document.querySelectorAll('input');
+        var tds = document.querySelectorAll('td');
+        
+        for(t in tds)
+        {
+        	if(typeof tds[t] == 'object'){			
+        		
+        		tds[t].style.transition = 'all 0.2s ease-in ' + (t/50) + 's';	
+        		tds[t].style.opacity = '1';
+        	}
+        }
+      }
+    block script
+    
+   

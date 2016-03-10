@@ -1,0 +1,98 @@
+extends ../templates/index.jade
+
+block content
+  h1(class="pull-xs-left")!=curso.titulo
+  a(class="btn btn-primary pull-xs-right", href="/curso") Voltar para cursos 
+  table.table.table-striped(style="opacity:0")
+      thead
+          tr
+            th Disciplina
+            th Média 1S
+            th Nacs
+            th AM
+            th Média 2S
+            th Falta na PS
+      tbody
+        each materia in curso.materias
+          tr
+            td!= materia.titulo
+            td
+              input.form-control.media-1s(type="text")
+            td
+              input.form-control.nac(type="text")
+            td
+              input.form-control.am(type="text")
+            td.media 0
+            td.falta-na-ps 0
+  block script
+    script.
+      var inputs = document.querySelectorAll('input');
+      var tds = document.querySelectorAll('td');
+      for (k in inputs){
+      
+      
+        inputs[k].onchange = function(){
+        
+        this.value = Number(this.value);
+        
+        if(isNaN(this.value)){
+          this.value = 0;
+        }
+        if(this.value > 10 || this.value < 0){
+          this.focus();
+          this.parentNode.setAttribute('class', 'has-error');
+          return false;
+        }
+        else
+        {
+          this.parentNode.setAttribute('class', '');
+        }
+          updateValues();
+        }
+      }
+      
+      
+      
+      function updateValues()
+      {
+        var rows = document.querySelectorAll('tbody tr');
+        
+        
+        for(r in rows)
+        {
+          var row = rows[r];
+          if(typeof row == 'object'){
+            var media1s = row.querySelector('input.media-1s').value;
+            media1s =  media1s.length == 0 ? null : Number(media1s);
+            
+            var nac = row.querySelector('input.nac').value;
+            nac = nac.length == 0 ? null : Number(nac);
+            
+            var am = row.querySelector('input.am').value;
+            am = am.length == 0 ? null : Number(am);
+            
+            var tdMedia = row.querySelector('td.media');
+            var tdfaltaNaPSs = row.querySelector('td.falta-na-ps');
+            
+            if(media1s == null && nac == null && am == null)
+              continue;
+            
+            var media = nac * 0.2 + am * 0.3;
+            var mediaAnual = (media + media1s) ;
+            var faltaNaPS;
+            
+            if(mediaAnual > 12)
+            {
+            faltaNaPS = "Nada";
+            }
+            else
+            {
+            faltaNaPS = Number(12 - mediaAnual).toFixed(2) * 2;  //NAC VALE 0.5
+            }
+            
+            tdMedia.innerHTML = Number(media).toFixed(2);
+            tdfaltaNaPSs.innerHTML = faltaNaPS;
+          }
+        }
+      }
+    
